@@ -19,8 +19,17 @@ pipeline {
 
 		stage('List_S3_Assumed') {
 			steps {
-                withAWS(roleAccount:'596834884942', role:"${env.ROLE}", useNode: true) {
+                withAWS(roleAccount:"${env.TARGETACCOUNT}", role:"${env.ROLE}", useNode: true) {
                     sh 'aws s3 ls'
+                }
+			}
+		}
+		stage('List_EC2_Assumed') {
+			steps {
+                withAWS(roleAccount:"${env.TARGETACCOUNT}", role:"${env.ROLE}", useNode: true) {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    sh "aws ec2 describe-instances --region ${env.REGION}"
+                    }
                 }
 			}
 		}

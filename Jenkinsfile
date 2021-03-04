@@ -28,7 +28,7 @@ pipeline {
 			steps {
                 withAWS(roleAccount:"${env.TARGETACCOUNT}", role:"${env.ROLE}", useNode: true) {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh "aws ec2 describe-instances --region ${env.REGION}"
+                    sh "aws ec2 describe-instances --region ${env.REGION} --output=table"
                     }
                 }
 			}

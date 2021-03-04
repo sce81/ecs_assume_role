@@ -7,7 +7,6 @@ pipeline {
             label "${env.NODELABEL}"
         }
     }
-	agent none
 
 	stages {
         stage ('Start') {

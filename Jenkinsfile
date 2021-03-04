@@ -4,7 +4,7 @@ pipeline {
 
     agent { 
         node {
-            label ${env.NODELABEL}
+            label "${env.NODELABEL}"
         }
     }
 	agent none

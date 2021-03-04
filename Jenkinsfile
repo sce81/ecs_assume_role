@@ -24,8 +24,9 @@ pipeline {
 		stage('Assume Role') {
 			steps {
 				script {
-                    "aws sts assume-role --role-arn arn:aws:iam::${env.TARGETACCOUNT}:role/${env.ROLE} --role-session-name AssumeRole-${env.BUILD_NUMBER} "
-					"aws sts get-caller-identity"
+                    aws sts assume-role --role-arn arn:aws:iam::${env.TARGETACCOUNT}:role/${env.ROLE} --role-session-name AssumeRole-${env.BUILD_NUMBER}
+					aws sts get-caller-identity
+					aws s3 ls
 				}
                 
 			}

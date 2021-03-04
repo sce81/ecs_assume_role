@@ -7,6 +7,7 @@ pipeline {
         stage ('Start') {
             steps {
                 echo "Assuming Role ${env.ROLE}"
+				sh "aws sts get-caller-identity"
             }
         }    
 		stage('List_S3') {
@@ -14,6 +15,7 @@ pipeline {
 				label "${env.NODELABEL}"
 			}
 			steps {
+				sh "aws sts get-caller-identity"
 				sh "aws s3 ls"
 			}
 		}
@@ -23,6 +25,7 @@ pipeline {
 			}
 			steps {
                 withAWS(roleAccount:'596834884942', role:"${env.ROLE}") {
+					sh "aws sts get-caller-identity"
                     sh 'aws s3 ls'
                 }
 			}

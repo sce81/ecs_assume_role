@@ -15,12 +15,8 @@ pipeline {
 				sh "aws sts get-caller-identity"
             }
         }    
-		stage('List_S3') {
-			steps {
-				sh "aws sts get-caller-identity"
-				sh "aws s3 ls"
-			}
-		}
+
+		
 		stage('List_S3_Assumed') {
 			steps {
                 withAWS(roleAccount:'596834884942', role:"${env.ROLE}", useNode: true) {

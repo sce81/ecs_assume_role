@@ -4,9 +4,14 @@ pipeline {
 	agent none
 
 	stages {
+        stage ('Start') {
+            steps {
+                echo "Assuming Role ${env.ROLE}"
+            }
+        }    
 		stage('List_S3') {
 			agent {
-				label "${env.agentLabel}"
+				label "${env.NODELABEL}"
 			}
 			steps {
 				sh "aws s3 ls"
@@ -14,7 +19,7 @@ pipeline {
 		}
 		stage('List_S3_Assumed') {
 			agent {
-				label "${env.agentLabel}"
+				label "${env.NODELABEL}"
 			}
 			steps {
                 withAWS(roleAccount:'596834884942', role:"${env.ROLE}") {

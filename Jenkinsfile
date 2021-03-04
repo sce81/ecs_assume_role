@@ -22,13 +22,16 @@ pipeline {
 			}
 		}
 		stage('Get Session Credentials') {
+			steps {
 			CREDS   = sh(returnStdout: true, script:"aws sts assume-role --role-arn arn:aws:iam::${env.TARGETACCOUNT}:role/${env.ROLE} --role-session-name DeployKubenetes${env.BUILD_NUMBER}-2 --output text | awk '/^CREDENTIALS/ { print \$2, \$4, \$5 }'") // Member must satisfy regular expression pattern: [\w+=,.@-]*
 			ACCESS  = sh(returnStdout: true, script:"set +x && echo \$'${CREDS}' | awk '{ print \$1 }' -")
             SECRET  = sh(returnStdout: true, script:"set +x && echo \$'${CREDS}' | awk '{ print \$2 }' -")
             SESSION  = sh(returnStdout: true, script:"set +x && echo \$'${CREDS}' | awk '{ print \$3 }' -")
+			}
 		}
 
 		stage('Run AWS Commands') {
+			steps {
 			sh "aws s3 ls"
 			sh """
             set +x 
@@ -38,6 +41,7 @@ pipeline {
             set -x
             aws s3 ls
             """
+			}
 		}
 	
 		stage('Assume Role') {

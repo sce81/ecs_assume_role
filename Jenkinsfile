@@ -23,10 +23,9 @@ pipeline {
 		}
 		stage('List_S3_Assumed') {
 			steps {
-                withAWS(roleAccount:'596834884942', role:"${env.ROLE}") {
 					sh "aws sts get-caller-identity"
-                    sh 'aws s3 ls'
-                }
+                    sh "aws sts assume-role --role-arn arn:aws:iam::${env.TARGETACCOUNT}:role/${env.ROLE} --role-session-name AssumeRole-${env.BUILD_NUMBER} "
+                
 			}
 		}
 	}

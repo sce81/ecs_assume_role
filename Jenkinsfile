@@ -21,11 +21,19 @@ pipeline {
 				sh "aws s3 ls"
 			}
 		}
-		stage('List_S3_Assumed') {
+		stage('Assume Role') {
 			steps {
 					sh "aws sts get-caller-identity"
                     sh "aws sts assume-role --role-arn arn:aws:iam::${env.TARGETACCOUNT}:role/${env.ROLE} --role-session-name AssumeRole-${env.BUILD_NUMBER} "
+					sh "aws sts get-caller-identity"
+
                 
+			}
+		}
+		stage('List_S3_Assumed') {
+			steps {
+					sh "aws sts get-caller-identity" 
+					sh "aws s3 ls"               
 			}
 		}
 	}
